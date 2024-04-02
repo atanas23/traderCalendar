@@ -1,10 +1,14 @@
 // import { format } from "date-fns";
-import CalendarGrid from './CalendarGrid';
+import CalendarControls from "./CalendarControls";
+import CalendarGrid from "./CalendarGrid";
 
 const Calendar = () => {
-	return <div>
-		<CalendarGrid />
-	</div>
-}
+  return (
+    <div>
+      <CalendarControls />
+      <CalendarGrid date={new Date()} />
+    </div>
+  );
+};
 
 export default Calendar;
