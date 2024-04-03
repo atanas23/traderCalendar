@@ -1,14 +1,18 @@
-// import { createSlice } from "@reduxjs/toolkit";
-// import { createStore } from "react-redux";
+import { createSlice, configureStore } from "@reduxjs/toolkit";
 
-// const changeMonthYear = (state, action) => {};
+const tradingDateSilce = createSlice({
+  name: "monthYearDate",
+  initialState: { date: new Date().toISOString() },
+  reducers: {
+    dateChange(state, action) {
+      state.date = action.payload;
+    },
+  },
+});
 
-// const calendarStore = createStore();
+const calendarStore = configureStore({
+  reducer: { date: tradingDateSilce.reducer },
+});
 
-// createSlice({
-//   name: "monthYear",
-//   initialState: "",
-//   reducers: {
-//     changeMonthYear(state, action) {},
-//   },
-// });
+export const dateActions = tradingDateSilce.actions;
+export default calendarStore;

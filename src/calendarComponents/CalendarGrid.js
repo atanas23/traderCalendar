@@ -6,6 +6,7 @@ import {
   startOfMonth,
 } from "date-fns";
 import "./calendarGrid.css";
+import { useSelector } from "react-redux";
 
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -48,12 +49,14 @@ const fillNextMonth = (endingDayIndex) => {
   return fillerDays;
 };
 
-const CalendarGrid = ({ date }) => {
+const CalendarGrid = () => {
+  //new Date and check store in !null
   // TODO: func to return an object with all of these
-  //   const currentDate = new Date();
-  const firstDayOfMonth = startOfMonth(date);
-  const lastDayOfMonth = endOfMonth(date);
+  const storeyDate = useSelector((state) => state.date.date);
+  const displayDate = new Date(storeyDate);
 
+  const firstDayOfMonth = startOfMonth(displayDate);
+  const lastDayOfMonth = endOfMonth(displayDate);
   //   add ID or use the start day
   const daysInMonth = eachDayOfInterval({
     start: firstDayOfMonth,
@@ -72,11 +75,14 @@ const CalendarGrid = ({ date }) => {
           </div>
         ))}
         {/* add filler days before the first day of the month - possibly in a new component */}
-
-        {fillPrevMonth(date.getFullYear(), date.getMonth(), startingDayIndex)}
+        {fillPrevMonth(
+          displayDate.getFullYear(),
+          displayDate.getMonth(),
+          startingDayIndex
+        )}
 
         {daysInMonth.map((day, index) =>
-          date.getDate() === day.getDate() ? (
+          displayDate.getDate() === day.getDate() ? (
             <div key={index} className="allGridDays daysGridToday">
               {format(day, "d")}
             </div>
