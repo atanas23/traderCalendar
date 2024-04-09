@@ -10,10 +10,11 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import { Link } from "react-router-dom";
 
 const pages = ["Statistics", "Markets"];
 const settings = ["Account", "Logout"];
-
+debugger;
 const NavBar = () => {
   return (
     <AppBar position="static">
@@ -22,19 +23,21 @@ const NavBar = () => {
           {/* navigation buttons */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
-              <Button
-                variant="outlined"
-                key={page}
-                sx={{
-                  my: 2,
-                  color: "white",
-                  display: "block",
-                  borderColor: "white",
-                  mr: 1,
-                }}
-              >
-                {page}
-              </Button>
+              <Link to={page}>
+                <Button
+                  variant="outlined"
+                  key={page}
+                  sx={{
+                    my: 2,
+                    color: "white",
+                    display: "block",
+                    borderColor: "white",
+                    mr: 1,
+                  }}
+                >
+                  {page}
+                </Button>
+              </Link>
             ))}
           </Box>
           {/* account logo */}

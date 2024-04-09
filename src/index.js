@@ -5,12 +5,23 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import calendarStore from "./store/calendarStore";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import StatsComponent from "./navigationBar/statisticsComponent/StatisticsComponent";
+import MarketComponent from "./navigationBar/marketsComponent/MarketComponent";
+
+const router = createBrowserRouter([
+  { path: "/", element: <App /> },
+  { path: "/statistics", element: <StatsComponent /> },
+  { path: "/markets", element: <MarketComponent /> },
+]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Provider store={calendarStore}>
-      <App />
+      <RouterProvider router={router}>
+        <App />
+      </RouterProvider>
     </Provider>
   </React.StrictMode>
 );
