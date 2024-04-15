@@ -11,7 +11,7 @@ const tradingDateSilce = createSlice({
 });
 
 const calendarStore = configureStore({
-  reducer: { date: tradingDateSilce.reducer },
+  reducer: { tradingDate: tradingDateSilce.reducer },
 });
 
 export const dateActions = tradingDateSilce.actions;

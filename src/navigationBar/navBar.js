@@ -14,7 +14,6 @@ import { Link } from "react-router-dom";
 
 const pages = ["Statistics", "Markets"];
 const settings = ["Account", "Logout"];
-debugger;
 const NavBar = () => {
   return (
     <AppBar position="static">

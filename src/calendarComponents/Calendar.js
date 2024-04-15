@@ -1,13 +1,14 @@
 // import { format } from "date-fns";
 import CalendarControls from "./CalendarControls";
 import CalendarGrid from "./CalendarGrid";
+import Container from "@mui/material/Container";
 
 const Calendar = () => {
   return (
-    <div>
+    <Container>
       <CalendarControls />
       <CalendarGrid date={new Date()} />
-    </div>
+    </Container>
   );
 };
 
