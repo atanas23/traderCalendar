@@ -85,7 +85,8 @@ const renderFillerMonth = (days, keyIndex) =>
       {day}
     </Box>
   ));
-//add dates with no trading data instead
+//TODO: add dates with no trading data instead(refactoring)
+//TODO: fix $0 not being shown because of ?.
 const generateTradingDays = (dates, data) => {
   let pnl;
   return dates[0].getFullYear() === new Date(data[0].date).getFullYear() &&
@@ -94,7 +95,7 @@ const generateTradingDays = (dates, data) => {
         pnl = data.find((el) => el.date === day.toISOString())?.pnl;
         return (
           <Box key={index} className="allGridDays">
-            {format(day, "d")}
+            {format(new Date(day), "d")}
             <Box>{pnl ? pnl + "$" : ""}</Box>
           </Box>
         );
