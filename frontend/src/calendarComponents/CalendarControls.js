@@ -5,7 +5,6 @@ import { dateActions } from "../store/calendarStore";
 import { useDispatch } from "react-redux"; //this is for calendarGrid
 
 const CalendarControls = () => {
-  //   const date = useSelector((state) => state.date.date); //this is for calendarGrid
   const dispatch = useDispatch();
   const dateChangeHandler = (event) => {
     dispatch(dateActions.dateChange(event.$d.toISOString()));

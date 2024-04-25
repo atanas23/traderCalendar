@@ -8,9 +8,13 @@ import calendarStore from "./store/calendarStore";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import StatsComponent from "./navigationBar/statisticsComponent/StatisticsComponent";
 import MarketComponent from "./navigationBar/marketsComponent/MarketComponent";
+import SignUpComponent from "./navigationBar/userComponents/SignUpComponent";
+import SignInComponent from "./navigationBar/userComponents/SingInComponent";
 
 const router = createBrowserRouter([
-  { path: "/", element: <App /> },
+  { path: "/", element: <App /> }, //was <App /><SignUpComponent />
+  { path: "/signup", element: <SignUpComponent /> }, //was <App /><SignUpComponent />
+  { path: "/signin", element: <SignInComponent /> }, //was <App /><SignUpComponent />
   { path: "/statistics", element: <StatsComponent /> },
   { path: "/markets", element: <MarketComponent /> },
 ]);
