@@ -158,7 +158,7 @@ const SignUpComponent = () => {
             underline="hover"
             sx={{ display: "block", textAlign: "end", mt: 1 }}
           >
-            Already have an account? Sign in
+            Already have an account? Sign in.
           </Link>
         </Box>
       </FormControl>

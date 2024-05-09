@@ -20,10 +20,16 @@ const initializeUserSchema = () => {
     password: String,
   });
 
-  // const User = new mongoose.model("User", userSchema);
-
   userSchema.plugin(findOrCreate);
   mongoose.model("User", userSchema);
+};
+
+const checkCredentials = async (email, password) => {
+  const user = getUser(email);
+  if (user) {
+    return await bcrypt.compare(password, user.password);
+  }
+  return false;
 };
 
 const getUser = async (email) => {
@@ -39,4 +45,4 @@ const saveUser = async (user) => {
 // const getTrades = async (model) => await model.find({});
 
 export default connectToDB;
-export { getUser, saveUser };
+export { getUser, saveUser, checkCredentials };

@@ -5,7 +5,6 @@ import cookieParser from "cookie-parser";
 import gs from "passport-google-oauth20";
 import bodyParser from "body-parser";
 import de from "dotenv/config";
-import checkUserExists from "./db/checkUserExists.js";
 import connectToDB from "./db/dbUtils.js";
 import setUpAuthRoutes from "./routes/auth.js";
 

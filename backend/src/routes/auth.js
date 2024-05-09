@@ -2,7 +2,7 @@ import express from "express";
 import path from "path";
 import bcrypt from "bcrypt";
 import mongoose from "mongoose";
-import { getUser, saveUser } from "../db/dbUtils.js";
+import { getUser, saveUser, checkCredentials } from "../db/dbUtils.js";
 
 const checkUserExists = async (email) => {
   return (await getUser(email)) ? true : false;
@@ -20,7 +20,19 @@ const addUserToDB = async (user) => {
   }
 };
 
-const signUP = async (req, res) => {
+const authLogin = async (email, password) => {
+  try {
+    const user = await getUser(email);
+    if (!user) return false; // User not found
+    const match = await bcrypt.compare(password, user.password);
+    return match;
+  } catch (error) {
+    console.error("Error authenticating user:", error);
+    throw error;
+  }
+};
+
+const signUp = async (req, res) => {
   try {
     const userExists = await checkUserExists(req.body.email);
     if (userExists) {
@@ -34,13 +46,23 @@ const signUP = async (req, res) => {
   }
 };
 
-const setUpAuthRoutes = (router) => {
-  router.post("/signup", signUP);
+const signIn = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const isAuthenticated = await authLogin(email, password);
+    if (isAuthenticated) {
+      return res.status(200).json({ message: "Authentication successful" });
+    }
+    return res.status(401).json({ message: "Invalid email or password" });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
 
-  router.post("/signin", async (req, res) => {
-    res.status(200).json({ message: "Connected to naMaikaTiPutkata" }); //check if exists, then return (200 with body, diff func )
-    return res;
-  });
+const setUpAuthRoutes = (router) => {
+  router.post("/signup", signUp);
+  router.post("/signin", signIn);
+
   return router;
 };
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -9,15 +9,53 @@ import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Link from "@mui/material/Link";
+import FormHelperText from "@mui/material/FormHelperText";
+import { useNavigate } from "react-router-dom";
+import { emailValidatorRegex } from "../../constants";
 
-const SignInComponent = () => {
-  const { register, handleSubmit } = useForm();
-  const [data, setData] = useState("");
+const SignUpComponent = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const handleClickShowPassword = () => setData((show) => !show);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
+  };
+
+  const navigate = useNavigate();
+  const onSubmit = async (data) => {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+
+    try {
+      const response = await fetch("api/auth/signin", {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(data),
+      });
+      const errMsg = await response.json().then((data) => data);
+
+      if (response.status === 200) {
+        alert(errMsg.message);
+        navigate("/");
+        return;
+      }
+      if (response.status === 401) {
+        throw new Error(errMsg.message);
+      }
+      if (response.status === 500) {
+        throw new Error(errMsg.message);
+      }
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   return (
@@ -34,18 +72,31 @@ const SignInComponent = () => {
       <FormControl>
         <TextField
           required
+          id="email-field"
           variant="standard"
-          sx={{ margin: 2, width: "25vw" }}
-          id="user-name-field"
-          {...register("userName")}
-          label="username"
+          label="email"
+          sx={{ m: 2, width: "25vw" }}
+          {...register("email", {
+            required: "Email is required",
+            pattern: {
+              value: emailValidatorRegex,
+              message: "Please enter a valid email address",
+            },
+          })}
         />
+        {errors.email && (
+          <FormHelperText error sx={{ m: 0, pt: 0, border: 0 }}>
+            {errors.email.message}
+          </FormHelperText>
+        )}
 
         <TextField
           required
+          id="password-field"
           variant="standard"
+          label="password"
           sx={{ margin: 2, width: "25vw" }}
-          type={data ? "text" : "password"}
+          type={showPassword ? "text" : "password"}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -55,29 +106,39 @@ const SignInComponent = () => {
                   onMouseDown={handleMouseDownPassword}
                   edge="end"
                 >
-                  {data ? <VisibilityOff /> : <Visibility />}
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               </InputAdornment>
             ),
           }}
-          id="password-field"
-          {...register("password")}
-          label="password"
+          {...register("password", {
+            required: "Password is required",
+            minLength: {
+              value: 8,
+              message: "Password must be at least 8 characters",
+            },
+          })}
         />
-        {/* <p>{data}</p> */}
+        {errors.password && (
+          <FormHelperText error sx={{ m: 0, pt: 0, border: 0 }}>
+            {errors.password.message}
+          </FormHelperText>
+        )}
+
         <Button
-          onClick={handleSubmit((data) => setData(JSON.stringify(data)))}
+          type="submit"
           variant="outlined"
+          onClick={handleSubmit(onSubmit)}
         >
           Submit
         </Button>
         <Box justifyContent="flex-end">
           <Link
-            href="signup"
+            href="/signup"
             underline="hover"
             sx={{ display: "block", textAlign: "end", mt: 1 }}
           >
-            Don't have an account? Sign up
+            Don't have an account? Sign up.
           </Link>
         </Box>
       </FormControl>
@@ -85,4 +146,4 @@ const SignInComponent = () => {
   );
 };
 
-export default SignInComponent;
+export default SignUpComponent;
